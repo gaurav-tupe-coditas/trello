@@ -1,1 +1,0 @@
-{"version":3,"sources":["../../../../src/app/routes/routes.data.ts"],"sourcesContent":["import type { Routes } from \"./routes.types.js\";\r\n\r\nexport const ROUTES:Routes = []"],"names":["ROUTES"],"mappings":"AAEA,OAAO,MAAMA,SAAgB,EAAE,CAAA"}
