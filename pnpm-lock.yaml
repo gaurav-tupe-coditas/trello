@@ -8,9 +8,6 @@ importers:
 
   .:
     dependencies:
-      dotenv:
-        specifier: ^17.4.2
-        version: 17.4.2
       express:
         specifier: ^5.2.1
         version: 5.2.1
@@ -48,6 +45,9 @@ importers:
       '@types/node':
         specifier: ^25.9.2
         version: 25.9.2
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
       nodemon:
         specifier: ^3.1.14
         version: 3.1.14
