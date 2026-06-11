@@ -1,5 +1,5 @@
 import { Sequelize } from "sequelize";
-import { env } from "../utilites/validate-env.js";
+import { env } from "../utils/validate-env.js";
 
 export const sequelize = new Sequelize(
   env.DB_NAME,
