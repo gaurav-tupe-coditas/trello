@@ -7,7 +7,7 @@ import {
 } from "express";
 import helmet from "helmet";
 import { ROUTES } from "./routes.data.js";
-import { ResponseHandler } from "../utilites/response-handler.js";
+import { ResponseHandler } from "../utils/response-handler.js";
 
 export const registerMiddlewares = (app: Application) => {
   app.use(helmet());
