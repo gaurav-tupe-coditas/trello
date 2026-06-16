@@ -1,4 +1,5 @@
 import jwtService from "../../utils/jwt.service.js";
+import { logOTPEmailContent } from "../../utils/logger.js";
 import otpService from "../../utils/otp.service.js";
 import { publishOtpEmail } from "../../utils/sqs.queue.js";
 import userService from "../users/user.service.js";
@@ -24,7 +25,9 @@ const requestOTP = async (email: string) => {
 
     await otpService.store(email, otp, 600);
 
-    publishOtpEmail(email, otp);
+    // publishOtpEmail(email, otp);
+    
+    await logOTPEmailContent(email, otp);
     return "Email sent";
   } catch (error) {
     throw error;
@@ -53,7 +56,7 @@ const verifyOTP = async (
     }
 
     const accessToken = jwtService.signAccessToken({
-      sub: user.id,
+      userId: user.id,
       email: user.email,
       name: user.name,
       global_role: user.global_role,

@@ -8,14 +8,14 @@ import {
 import helmet from "helmet";
 import { ROUTES } from "./routes.data.js";
 import { ResponseHandler } from "../utils/response-handler.js";
-
+import cors from "cors"
 export const registerMiddlewares = (app: Application) => {
   app.use(helmet());
   app.use(json());
-
+  app.use(cors())
   for (const route of ROUTES) {
     app.use(route.path, route.router);
-    console.log(route.path, route.router)
+    
   }
   app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     res
