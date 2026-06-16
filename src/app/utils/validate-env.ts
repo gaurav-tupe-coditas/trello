@@ -8,7 +8,8 @@ const envSchema = z.object({
     SECRET_KEY:z.string(),
     AMAZON_ACCESSKEYID:z.string(),
     AMAZON_SECRETACCESSKEY:z.string(),
-    SQS_QUEUEURL:z.string()
+    SQS_QUEUEURL:z.string(),
+    REDIS_PASSWORD:z.string()
 });
 
 export const env = envSchema.parse(process.env);

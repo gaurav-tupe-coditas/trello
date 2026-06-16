@@ -1,8 +1,9 @@
 import { createClient } from 'redis';
+import { env } from '../utils/validate-env.js';
 
 const redisRecord = createClient({
     username: 'default',
-    password: 'LkKt1pGgghqcyLifn0IjfIUSrlhNukjt',
+    password: env.REDIS_PASSWORD,
     socket: {
         host: 'wish-appreciative-stream-24552.db.redis.io',
         port: 12764
