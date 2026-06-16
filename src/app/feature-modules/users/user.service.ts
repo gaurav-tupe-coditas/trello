@@ -9,7 +9,17 @@ try {
 }
 }
 
-const findUser = async(userData:any)=>{
+
+const findOneUser = async(userData:any)=>{
+    try {
+        const result=await userRepo.findOne({where:{email:userData.email}})
+        return result;
+    } catch (error) {
+        throw error
+    }
+}
+
+const findAllUser = async(userData:any)=>{
     try {
         const result=await userRepo.findAll(userData)
         return result;
@@ -19,5 +29,5 @@ const findUser = async(userData:any)=>{
 }
 
 export default{
-    createUser,findUser
+    createUser,findAllUser,findOneUser
 }

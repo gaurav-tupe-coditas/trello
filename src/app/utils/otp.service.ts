@@ -11,6 +11,9 @@ export interface OTPRecord{
 
 
 
+
+
+
  const generate = ()=>Math.floor(100000+Math.random() * 900000).toString()
 
 
@@ -40,6 +43,7 @@ const verify = async(email:string,providedOTP:string)=>{
     try {
         const cachedData =   await otpStore.get(`otp:${email}`)
         const record :OTPRecord|null = cachedData ? JSON.parse(cachedData) : null
+        const ttl = await otpStore.ttl(`otp:${email}`)
         if(!record){
             return false;
         }
@@ -49,6 +53,13 @@ const verify = async(email:string,providedOTP:string)=>{
             await otpStore.del(`otp:${email}`);
             return false;
         }
+
+        otpStore.set(`otp:${email}`,JSON.stringify(record),{
+            expiration:{
+                type:"EX",
+                value:ttl
+            }
+        })
 
         const isValid = record.otp  === providedOTP
 

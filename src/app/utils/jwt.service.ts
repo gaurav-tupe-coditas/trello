@@ -22,8 +22,8 @@ export interface RefreshTokenPayload {
   jti: string;
 }
 
-export const jwtService = {
-  signAccessToken(payload: Omit<AccessTokenPayload, "jti">): string {
+
+  const signAccessToken=(payload: Omit<AccessTokenPayload, "jti">): string=> {
     const jti = crypto.randomUUID();
     return jwt.sign({ ...payload, jti }, privateKey, {
       algorithm: "RS256",
@@ -31,9 +31,9 @@ export const jwtService = {
       issuer: "trello-platform",
       subject: payload.sub,
     });
-  },
+  }
 
-  signRefreshToken(userId: string, password_version: number): string {
+  const signRefreshToken=(userId: string, password_version: number): string=> {
     const jti = randomUUID();
     return jwt.sign(
       {
@@ -50,28 +50,33 @@ export const jwtService = {
         subject: userId,
       },
     );
-  },
+  }
 
-  veriryAccessToken(token:string):AccessTokenPayload{
+  const verifyAccessToken=(token:string):AccessTokenPayload=>{
     return jwt.verify(token,publicKey,{
         algorithms:["RS256"],
         issuer:"trello-platform"
     }) as AccessTokenPayload
-  },
+  }
 
-  verifyRefreshToken(token:string):RefreshTokenPayload{
+  const verifyRefreshToken=(token:string):RefreshTokenPayload=>{
     return jwt.verify(token,publicKey,{
         algorithms:["RS256"],
         issuer:"trello-platform"
     }) as RefreshTokenPayload
-  },
+  }
 
-  decode(token:string){
+  const decode=(token:string)=>{
     return jwt.decode(token)
-  },
+  }
 
-  extractJti(token:string):string|null{
+  const extractJti=(token:string):string|null=>{
     const decoded = jwt.decode(token) as AccessTokenPayload | RefreshTokenPayload ;
     return decoded?.jti || null
   }
-};
+
+
+
+export default{
+  signAccessToken,signRefreshToken,verifyAccessToken,verifyRefreshToken,decode,extractJti
+}

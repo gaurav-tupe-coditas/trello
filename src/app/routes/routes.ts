@@ -15,6 +15,7 @@ export const registerMiddlewares = (app: Application) => {
 
   for (const route of ROUTES) {
     app.use(route.path, route.router);
+    console.log(route.path, route.router)
   }
   app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     res

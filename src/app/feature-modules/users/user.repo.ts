@@ -1,14 +1,20 @@
 import { UserSchema } from "./users.schema.js";
 
-const findAll = (options:any)=>UserSchema.findAll(options)
+const findAll = (options: any) => UserSchema.findAll(options);
 
-const create = (userData:any)=>UserSchema.create(userData)
+const findOne = (options:any)=>UserSchema.findOne(options)
 
-const update = (queryOptions:any,userData:any) =>UserSchema.update(userData,queryOptions)
+const create = (userData: any) => UserSchema.create(userData);
 
-const deleteAll = (queryOptions:any)=>UserSchema.destroy(queryOptions)
+const update = (queryOptions: any, userData: any) =>
+  UserSchema.update(userData, queryOptions);
 
+const deleteAll = (queryOptions: any) => UserSchema.destroy(queryOptions);
 
 export default {
-    findAll,create,update,deleteAll
-}
+  findAll,
+  findOne,
+  create,
+  update,
+  deleteAll,
+};
