@@ -5,7 +5,10 @@ const envSchema = z.object({
     DB_NAME: z.string(),
     DB_USER: z.string(),
     DB_PASSWORD: z.string(),
-    SECRET_KEY:z.string()
+    SECRET_KEY:z.string(),
+    AMAZON_ACCESSKEYID:z.string(),
+    AMAZON_SECRETACCESSKEY:z.string(),
+    SQS_QUEUEURL:z.string()
 });
 
 export const env = envSchema.parse(process.env);

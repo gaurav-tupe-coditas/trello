@@ -15,12 +15,17 @@
   "license": "ISC",
   "packageManager": "pnpm@10.33.0",
   "dependencies": {
-    "dotenv": "^17.4.2",
+    "@aws-sdk/client-ses": "^3.1068.0",
+    "@aws-sdk/client-sqs": "^3.1068.0",
+    "@types/cors": "^2.8.19",
+    "cors": "^2.8.6",
     "express": "^5.2.1",
     "helmet": "^8.2.0",
+    "jsonwebtoken": "^9.0.3",
     "multer": "^2.1.1",
     "pg": "^8.21.0",
     "pg-hstore": "^2.3.4",
+    "redis": "^6.0.0",
     "sequelize": "^6.37.8",
     "zod": "^4.4.3"
   },
@@ -28,8 +33,10 @@
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.41",
     "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/multer": "^2.1.0",
     "@types/node": "^25.9.2",
+    "dotenv": "^17.4.2",
     "nodemon": "^3.1.14",
     "sequelize-cli": "^6.6.5"
   }
