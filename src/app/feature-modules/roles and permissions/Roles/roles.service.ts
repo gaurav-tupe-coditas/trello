@@ -1,9 +1,9 @@
-import { create } from "domain"
-import rolesRepo from "./roles.repo.js"
+import rolepermissionsRepo from "../rolepermissions/rolepermissions.repo.js"
+
 
 export const createRole = async(roledata:any)=>{
     try {
-        const result = await rolesRepo.create(roledata)
+        const result = await rolepermissionsRepo.create(roledata)
         return result
     } catch (error) {
         
@@ -12,7 +12,7 @@ export const createRole = async(roledata:any)=>{
 
 export const getRole = async(roledata:any)=>{
     try {
-        const result = await rolesRepo.findOne(roledata)
+        const result = await rolepermissionsRepo.findOne(roledata)
         return result
     } catch (error) {
         
@@ -22,7 +22,7 @@ export const getRole = async(roledata:any)=>{
 
 export const deleteRole = async(roledata:any)=>{
     try {
-        const result = await rolesRepo.deleteAll(roledata)
+        const result = await rolepermissionsRepo.deleteAll(roledata)
         return result
     } catch (error) {
         
@@ -31,7 +31,7 @@ export const deleteRole = async(roledata:any)=>{
 
 export const deleteAllRole = async(roledata:any)=>{
     try {
-        const result = await rolesRepo.deleteAll(roledata)
+        const result = await rolepermissionsRepo.deleteAll(roledata)
         return result
     } catch (error) {
         

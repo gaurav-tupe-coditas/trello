@@ -2,13 +2,13 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../../../connections/pg.connection.js";
 import { BaseModel, baseModelAttributes } from "../../../utils/base.schema.js";
 
-export class ProjectMembers extends BaseModel<ProjectMembers>{
+export class ProjectMembersSchema extends BaseModel<ProjectMembersSchema>{
     declare project_id:string;
     declare user_id:string;
     declare role_id:string;
 }
 
-ProjectMembers.init({
+ProjectMembersSchema.init({
     ...baseModelAttributes,
     project_id:{
         type:DataTypes.UUID,
