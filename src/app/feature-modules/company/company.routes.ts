@@ -11,7 +11,7 @@ router.post("/create",async(req,res,next)=>{
 
         res.status(200).send(result)
     } catch (error) {
-        throw error
+        next(error)
     }
 })
 
@@ -22,10 +22,10 @@ router.get("/:id",async(req,res,next)=>{
         const result = await companyService.getCompanyById(id)
         res.status(200).send(result)
     } catch (error) {
-        throw error
+        next( error)
     }
 })
 
 
 
-export default new Route("/compnay",router)
+export default new Route("/company",router)

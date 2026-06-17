@@ -1,8 +1,7 @@
-import type { Request, Response } from "express";
-import type { userLocalData } from "./token.types.js";
-import jwt from "jsonwebtoken"
-import jwtService from "./jwt.service.js";
+import type { NextFunction, Request, Response } from "express";
 import userService from "../../feature-modules/users/user.service.js";
+import jwtService from "./jwt.service.js";
+import type { userLocalData } from "./token.types.js";
 
 declare global{
     namespace Express{
@@ -13,7 +12,7 @@ declare global{
 }
 
 
-export const tokenValidation = async(req:Request,res:Response)=>{
+export const tokenValidation = async(req:Request,res:Response,next:NextFunction)=>{
 try {
    let accessToken = req.cookies["accessToken"]
 
@@ -32,12 +31,12 @@ try {
    if(!user || userpayload.password_version!=user.password_version){
     const RefreshTokenPayload= jwtService.verifyRefreshToken(refreshToken)
     const newAccessToken = jwtService.signAccessToken(userpayload)
-    res.clearCookie(accessToken)
+    res.clearCookie("accessToken")
     res.cookie("accessToken",newAccessToken)
    }
 
    req.user = userpayload   
-
+   next()
 
 } catch (error) {
     throw error

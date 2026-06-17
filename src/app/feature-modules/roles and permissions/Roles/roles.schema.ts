@@ -17,7 +17,7 @@ RoleSchema.init(
       allowNull: true,
     },
     name: {
-      type: DataTypes.UUID,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     is_default: {
