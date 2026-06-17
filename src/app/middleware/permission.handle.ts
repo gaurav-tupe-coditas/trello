@@ -2,6 +2,7 @@ import type { NextFunction, Request, Response } from "express";
 import permissionsService from "../feature-modules/roles and permissions/Permissions/permissions.service.js";
 import userprojectpermissionService from "../feature-modules/roles and permissions/UserProjectPermission/userprojectpermission.service.js";
 import rolepermissionsService from "../feature-modules/roles and permissions/rolepermissions/rolepermissions.service.js";
+import userrolesService from "../feature-modules/roles and permissions/userroles/userroles.service.js";
 import projectmembersService from "../feature-modules/roles and permissions/Project Members/projectmembers.service.js";
 
 export const RoutePermissionChecker =
@@ -13,29 +14,39 @@ export const RoutePermissionChecker =
 
         if(!permissionDetails)throw "No such permission exists"
 
-      const UserProjectPermissions =
-        await userprojectpermissionService.getUserProjectPermission({
-          user_id: req.user.userId,
-          permission_id: permissionDetails?.id,
-        });
-      if (UserProjectPermissions) {
-        if (!UserProjectPermissions?.is_granted) {
-          throw "Unauthorized Action";
-        }
-        next();
-      }
-      const getUserRoles = await projectmembersService.getAllRole({user_id:req.user.userId})
+        const userroles = await userrolesService.getAllUserRole({user_id:req.user.userId})
 
-      if(!getUserRoles) throw "Unauthorized Action"
-      getUserRoles.forEach(async(record)=>{
-        const userrolepermission = await rolepermissionsService.getRolePermission({role_id:record.role_id,permission_id:permissionDetails.id}
+        if(!userroles)throw"Unauthorized Action"
+        userroles?.forEach(async(record)=>{
+            const givenPermissionOnRole = await rolepermissionsService.getRolePermission({role_id:record.id,permission_id:permissionDetails.id})
+            if(givenPermissionOnRole)next()
+        })
+
+        throw "Unauthroized Actions"
+
+    //   const UserProjectPermissions =
+    //     await userprojectpermissionService.getUserProjectPermission({
+    //       user_id: req.user.userId,
+    //       permission_id: permissionDetails?.id,
+    //     });
+    //   if (UserProjectPermissions) {
+    //     if (!UserProjectPermissions?.is_granted) {
+    //       throw "Unauthorized Action";
+    //     }
+    //     next();
+    //   }
+    //   const getUserRoles = await projectmembersService.getAllRole({user_id:req.user.userId})
+
+    //   if(!getUserRoles) throw "Unauthorized Action"
+    //   getUserRoles.forEach(async(record)=>{
+    //     const userrolepermission = await rolepermissionsService.getRolePermission({role_id:record.role_id,permission_id:permissionDetails.id}
         
-        )
-        if(userrolepermission)next()
-      })
+    //     )
+    //     if(userrolepermission)next()
+    //   })
       
 
-      throw "Unauthorized Action"
+    //   throw "Unauthorized Action"
 
       
       
@@ -46,7 +57,7 @@ export const RoutePermissionChecker =
 
 
 
-  export const ProjectPermissionChecker = async(PersonProjectDetails:{permissionName:string,project_id:string,user_id:string,role_id:string})=>{
+  export const ProjectPermissionChecker = async(PersonProjectDetails:{permissionName:string,project_id:string,user_id:string})=>{
 try {
     const permissionDetails =
         await permissionsService.getPermission(PersonProjectDetails.permissionName);
@@ -67,12 +78,14 @@ try {
       }
 
 
+      const userRolesOnProject = await projectmembersService.getAllRole({user_id:PersonProjectDetails.user_id,project_id:PersonProjectDetails.project_id})
 
-      const userrolepermission = await rolepermissionsService.getRolePermission({role_id:req.user.role_id,permission_id:permissionDetails.id})
+      userRolesOnProject?.forEach(async(record)=>{
+        const PermissionsOnRole = await rolepermissionsService.getRolePermission({role_id:record.id,permission_id:permissionDetails.id})
 
-      if(!userrolepermission){return false}
-
-      return true
+        if(PermissionsOnRole)return true
+      })
+      return false
 } catch (error) {
     throw error
 }
