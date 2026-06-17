@@ -1,4 +1,4 @@
-import jwtService from "../../utils/jwt.service.js";
+import jwtService from "../../utils/token/jwt.service.js";
 import { logOTPEmailContent } from "../../utils/logger.js";
 import otpService from "../../utils/otp.service.js";
 import { publishOtpEmail } from "../../utils/sqs.queue.js";
