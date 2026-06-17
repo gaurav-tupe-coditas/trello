@@ -31,7 +31,7 @@ export const baseModelAttributes:Record<"id"| "is_archived"|"created_at"|"create
         allowNull:false
     },
     updated_at:{
-        type:DataTypes.DATE
+        type:DataTypes.DATE,
     },
     updated_by:{
         type:DataTypes.UUID
