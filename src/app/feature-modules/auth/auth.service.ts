@@ -1,7 +1,7 @@
 import jwtService from "../../middleware/token/jwt.service.js";
 import { logOTPEmailContent } from "../../utils/logger.js";
 import otpService from "../../utils/otp.service.js";
-import { publishOtpEmail } from "../../utils/sqs.queue.js";
+import rolesService from "../roles and permissions/Roles/roles.service.js";
 import userService from "../users/user.service.js";
 
 export interface AuthResponse {
@@ -54,6 +54,7 @@ const verifyOTP = async (
     if (user.is_archived) {
       throw new Error("Account is disabled");
     }
+  
 
     const accessToken = jwtService.signAccessToken({
       userId: user.id,

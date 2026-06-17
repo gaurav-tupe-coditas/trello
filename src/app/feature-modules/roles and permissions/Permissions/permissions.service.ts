@@ -1,6 +1,6 @@
 import permissionsRepo from "./permissions.repo.js"
 
-export const createRole = async(permissiondata:any)=>{
+export const createPermission = async(permissiondata:any)=>{
     try {
         const result = await permissionsRepo.create(permissiondata)
         return result
@@ -9,7 +9,7 @@ export const createRole = async(permissiondata:any)=>{
     }
 }
 
-export const getRole = async(permissiondata:any)=>{
+export const getPermission = async(permissiondata:any)=>{
     try {
         const result = await permissionsRepo.findOne(permissiondata)
         return result
@@ -19,7 +19,7 @@ export const getRole = async(permissiondata:any)=>{
 }
 
 
-export const deleteRole = async(permissiondata:any)=>{
+export const deletePermission = async(permissiondata:any)=>{
     try {
         const result = await permissionsRepo.deleteAll(permissiondata)
         return result
@@ -28,7 +28,7 @@ export const deleteRole = async(permissiondata:any)=>{
     }
 }
 
-export const deleteAllRole = async(permissiondata:any)=>{
+export const deleteAllPermission = async(permissiondata:any)=>{
     try {
         const result = await permissionsRepo.deleteAll(permissiondata)
         return result
@@ -38,7 +38,7 @@ export const deleteAllRole = async(permissiondata:any)=>{
 }
 
 
-export const updateRole = async(permissiondata:any)=>{
+export const updatePermission = async(permissiondata:any)=>{
     try {
         
     } catch (error) {
@@ -47,5 +47,5 @@ export const updateRole = async(permissiondata:any)=>{
 }
 
 export default{
-    createRole,getRole,deleteRole,deleteAllRole,updateRole
+    createPermission,getPermission,deletePermission,deleteAllPermission,updatePermission
 }

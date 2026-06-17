@@ -12,7 +12,7 @@ ProjectMembersSchema.init({
     ...baseModelAttributes,
     project_id:{
         type:DataTypes.UUID,
-        allowNull:false
+        allowNull:true
     },
     user_id:{
         type:DataTypes.UUID,

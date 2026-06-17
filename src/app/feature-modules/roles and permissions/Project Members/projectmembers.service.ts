@@ -18,6 +18,15 @@ export const getRole = async(projectmemberdata:any)=>{
     }
 }
 
+export const getAllRole = async(projectmemberdata:any)=>{
+    try {
+        const result = await projectmembersRepo.findAll(projectmemberdata)
+        return result
+    } catch (error) {
+        
+    }
+}
+
 
 export const deleteRole = async(projectmemberdata:any)=>{
     try {
@@ -47,5 +56,5 @@ export const updateRole = async(projectmemberdata:any)=>{
 }
 
 export default{
-    createRole,getRole,deleteRole,deleteAllRole,updateRole
+    createRole,getRole,getAllRole,deleteRole,deleteAllRole,updateRole
 }

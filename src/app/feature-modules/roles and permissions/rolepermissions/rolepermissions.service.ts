@@ -1,51 +1,50 @@
-import rolepermissionsRepo from "./rolepermissions.repo.js"
+import rolepermissionsRepo from "./rolepermissions.repo.js";
 
-export const createRole = async(rolepermissiondata:any)=>{
-    try {
-        const result = await rolepermissionsRepo.create(rolepermissiondata)
-        return result
-    } catch (error) {
-        
-    }
-}
+ const createRolePermission = async (rolepermissiondata: any) => {
+  try {
+    const result = await rolepermissionsRepo.create(rolepermissiondata);
+    return result;
+  } catch (error) {}
+};
 
-export const getRole = async(rolepermissiondata:any)=>{
-    try {
-        const result = await rolepermissionsRepo.findOne(rolepermissiondata)
-        return result
-    } catch (error) {
-        
-    }
-}
+ const getRolePermission = async (rolepermissiondata: any) => {
+  try {
+    const result = await rolepermissionsRepo.findOne(rolepermissiondata);
+    return result;
+  } catch (error) {}
+};
 
 
-export const deleteRole = async(rolepermissiondata:any)=>{
-    try {
-        const result = await rolepermissionsRepo.deleteAll(rolepermissiondata)
-        return result
-    } catch (error) {
-        
-    }
-}
+ const getAllPermissionForRole = async(rolepermissiondata: any) => {
+  try {
+    const result = await rolepermissionsRepo.findAll(rolepermissiondata);
+    return result;
+  } catch (error) {}
+};
+ const deleteRolePermission = async (rolepermissiondata: any) => {
+  try {
+    const result = await rolepermissionsRepo.deleteAll(rolepermissiondata);
+    return result;
+  } catch (error) {}
+};
 
-export const deleteAllRole = async(rolepermissiondata:any)=>{
-    try {
-        const result = await rolepermissionsRepo.deleteAll(rolepermissiondata)
-        return result
-    } catch (error) {
-        
-    }
-}
+ const deleteAllRolePermission = async (rolepermissiondata: any) => {
+  try {
+    const result = await rolepermissionsRepo.deleteAll(rolepermissiondata);
+    return result;
+  } catch (error) {}
+};
 
+ const updateRolePermission = async (rolepermissiondata: any) => {
+  try {
+  } catch (error) {}
+};
 
-export const updateRole = async(rolepermissiondata:any)=>{
-    try {
-        
-    } catch (error) {
-        
-    }
-}
-
-export default{
-    createRole,getRole,deleteRole,deleteAllRole,updateRole
-}
+export default {
+  createRolePermission,
+  getRolePermission,
+  getAllPermissionForRole,
+  deleteRolePermission,
+  deleteAllRolePermission,
+  updateRolePermission,
+};
