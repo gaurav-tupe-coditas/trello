@@ -9,7 +9,9 @@ const envSchema = z.object({
     AMAZON_ACCESSKEYID:z.string(),
     AMAZON_SECRETACCESSKEY:z.string(),
     SQS_QUEUEURL:z.string(),
-    REDIS_PASSWORD:z.string()
+    REDIS_PASSWORD:z.string(),
+    AWS_REGION:z.string(),
+    TEST_SEND_EMAIL:z.email()
 });
 
 export const env = envSchema.parse(process.env);

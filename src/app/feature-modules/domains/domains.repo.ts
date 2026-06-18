@@ -1,10 +1,11 @@
 
 import { Domain } from "node:domain";
 import { DomainSchema } from "./domains.schema.js";
+import type { Transaction } from "sequelize";
 
 const findOne = (company_id?:string,domain?:string)=>DomainSchema.findOne({where:{company_id,domain}})
 
-const create=(data:any)=>DomainSchema.create(data);
+const create=(data:any,transaction?:Transaction)=>DomainSchema.create(data,{transaction:transaction??null});
 
 const findAll=(companyId:string,domain?:string)=>DomainSchema.findAll({where:{company_id:companyId,domain,is_archived:false}})
 

@@ -3,6 +3,8 @@ import domainsService from "../domains/domains.service.js";
 import subscriptionsRepo from "../subscriptions/subscriptions.repo.js";
 import userService from "../users/user.service.js";
 import companyRepo from "./company.repo.js";
+import { sequelize } from "../../connections/pg.connection.js";
+import type { Transaction } from "sequelize";
 
 interface compnayCreation {
   name: string;
@@ -23,12 +25,13 @@ const createCompany = async (data: compnayCreation) => {
       throw "Subscription tier not found";
     }
 
-    const company = await companyRepo.create({
+    const result = await sequelize.transaction(async(t:Transaction)=>{
+      const company = await companyRepo.create({
       name: data.name,
       logo: data.logo,
       subscription_id: data.subscription_id,
       created_by: data.createdBy,
-    });
+    },t);
 
     if (!company) {
       throw new Error("Failed to create company");
@@ -37,7 +40,7 @@ const createCompany = async (data: compnayCreation) => {
     const adminEmail = data.admin_email.toLowerCase().trim();
     const domain = adminEmail.split("@")[1];
     if (domain) {
-      await domainsService.createDomain({ company_id: company.id,domain:domain,created_by:data.createdBy });
+      await domainsService.createDomain({ company_id: company.id,domain:domain,created_by:data.createdBy },t);
     }
 
     const adminUser = await userService.createUser({
@@ -46,11 +49,16 @@ const createCompany = async (data: compnayCreation) => {
         global_role:"COMPANY_ADMIN",
         company_id:company.id,
         created_by:data.createdBy
-    })
+    },t)
 
     return {
         company,admin:adminUser
     }
+    
+    }
+  )
+
+   return result 
   } catch (error) {
     throw error;
   }

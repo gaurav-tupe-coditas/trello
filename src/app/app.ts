@@ -1,11 +1,12 @@
 import express from "express";
 import { registerMiddlewares } from "./routes/routes.js";
+import { env } from "./utils/validate-env.js";
 export const StartServer = () => {
   try {
     const app = express();
     
     registerMiddlewares(app);
-    app.listen(8000, () => console.log("App is listening on port 8000"));
+    app.listen(env.PORT, () => console.log(`App is listening on port ${env.PORT} `));
   } catch (error) {
     console.log(error);
     process.nextTick(() => process.exit(1));

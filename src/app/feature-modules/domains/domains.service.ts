@@ -1,3 +1,4 @@
+import type { Transaction } from "sequelize";
 import domainsRepo from "./domains.repo.js";
 
 interface domainData {
@@ -21,9 +22,9 @@ const findOneByCompanyAndDomain = async (data: domainData) => {
   }
 };
 
-const createDomain = async (data:any) => {
+const createDomain = async (data:any,transaction?:Transaction) => {
   try {
-    return await domainsRepo.create(data);
+    return await domainsRepo.create(data,transaction);
   } catch (error) {
     throw error;
   }

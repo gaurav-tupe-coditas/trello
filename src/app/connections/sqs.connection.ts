@@ -6,7 +6,7 @@ import { env } from "../utils/validate-env.js";
 
 
 export const sqsClient = new SQSClient({
-    region: "ap-south-1",
+    region: env.AWS_REGION,
     credentials: {
         accessKeyId: env.AMAZON_ACCESSKEYID,
         secretAccessKey:

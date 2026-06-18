@@ -1,7 +1,8 @@
 import jwtService from "../../middleware/token/jwt.service.js";
 import { logOTPEmailContent } from "../../utils/logger.js";
 import otpService from "../../utils/otp.service.js";
-import rolesService from "../roles and permissions/Roles/roles.service.js";
+import { sendToSQS } from "../../utils/sqs.queue.js";
+import { env } from "../../utils/validate-env.js";
 import userService from "../users/user.service.js";
 
 export interface AuthResponse {
@@ -25,9 +26,9 @@ const requestOTP = async (email: string) => {
 
     await otpService.store(email, otp, 600);
 
-    // publishOtpEmail(email, otp);
+    await sendToSQS({to_email:email,sender_email:env.TEST_SEND_EMAIL,subject:"Login OTP",message:`Your OTP for login is ${otp}`})
     
-    await logOTPEmailContent(email, otp);
+    await logOTPEmailContent(email, otp); //For testing purposes
     return "Email sent";
   } catch (error) {
     throw error;

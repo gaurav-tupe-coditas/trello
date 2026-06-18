@@ -1,8 +1,9 @@
+import type { Transaction } from "sequelize"
 import userRepo from "./user.repo.js"
 
-const createUser = async(userData:any)=>{
+const createUser = async(userData:any,transaction?:Transaction)=>{
 try {
-    const result = await userRepo.create(userData)
+    const result = await userRepo.create(userData,transaction)
     return result
 } catch (error) {
     throw error
