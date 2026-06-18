@@ -4,15 +4,13 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { env } from "../../utils/validate-env.js";
 
-
-
-
 const privateKey =
   
- readFileSync(join(process.cwd(), "keys/private.key"), "utf-8");
+  env.PRIVATE_KEY || readFileSync(join(process.cwd(), "keys/private.key"), "utf-8");
 
 const publicKey =
-readFileSync(join(process.cwd(), "keys/public.key"), "utf-8");
+  
+  env.PUBLIC_KEY||readFileSync(join(process.cwd(), "keys/public.key"), "utf-8");
 
 export interface AccessTokenPayload {
   userId: string;
