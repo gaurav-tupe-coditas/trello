@@ -2,13 +2,14 @@ import { Router } from "express";
 import { ResponseHandler } from "../../utils/response-handler.js";
 import authService from "./auth.service.js";
 import { Route } from "../../routes/routes.types.js";
+import { env } from "../../utils/validate-env.js";
 
 const router = Router();
 
 router.post("/request-otp", async (req, res, next) => {
   try {
     const { email } = req.body;
-
+    console.log(env)
     const result = await authService.requestOTP(email);
 
     res.status(200).send(new ResponseHandler(result));

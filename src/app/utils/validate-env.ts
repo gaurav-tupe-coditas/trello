@@ -1,4 +1,9 @@
+import { zstdCompress } from "node:zlib";
 import z from "zod";
+
+
+const keySchema = z.string().transform((val) => val.replace(/\\n/g, "\n"));
+
 
 const envSchema = z.object({
     PORT: z.coerce.number("PORT MUST BE A NUMERIC VALUE"),
@@ -11,7 +16,9 @@ const envSchema = z.object({
     SQS_QUEUEURL:z.string(),
     REDIS_PASSWORD:z.string(),
     AWS_REGION:z.string(),
-    TEST_SEND_EMAIL:z.email()
+    TEST_SEND_EMAIL:z.email(),
+    PRIVATE_KEY:keySchema,
+    PUBLIC_KEY:keySchema
 });
 
 export const env = envSchema.parse(process.env);

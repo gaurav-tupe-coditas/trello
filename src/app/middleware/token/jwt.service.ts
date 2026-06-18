@@ -2,13 +2,17 @@ import jwt from "jsonwebtoken";
 import { randomUUID } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { env } from "../../utils/validate-env.js";
 
-const privateKey = readFileSync(
-  join(process.cwd(), "keys/private.key"),
-  "utf-8",
-);
 
-const publicKey = readFileSync(join(process.cwd(), "keys/public.key"), "utf-8");
+
+
+const privateKey =
+  
+ readFileSync(join(process.cwd(), "keys/private.key"), "utf-8");
+
+const publicKey =
+readFileSync(join(process.cwd(), "keys/public.key"), "utf-8");
 
 export interface AccessTokenPayload {
   userId: string;
@@ -28,7 +32,7 @@ export interface RefreshTokenPayload {
 }
 
 const signAccessToken = (payload: Omit<AccessTokenPayload, "jti">): string => {
-  const jti = crypto.randomUUID();
+  const jti = randomUUID();
   return jwt.sign({ ...payload, jti }, privateKey, {
     algorithm: "RS256",
     expiresIn: "15m",
@@ -69,8 +73,6 @@ const verifyRefreshToken = (token: string): RefreshTokenPayload => {
     issuer: "trello-platform",
   }) as RefreshTokenPayload;
 };
-
-
 
 const decode = (token: string) => {
   return jwt.decode(token);
