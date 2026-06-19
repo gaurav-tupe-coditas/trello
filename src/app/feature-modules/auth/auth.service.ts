@@ -4,24 +4,15 @@ import otpService from "../../utils/otp.service.js";
 import { sendToSQS } from "../../utils/sqs.queue.js";
 import { env } from "../../utils/validate-env.js";
 import userService from "../users/user.service.js";
+import { AuthError, AuthErrorType, type AuthResponse } from "./auth.types.js";
 
-export interface AuthResponse {
-  accessToken: string;
-  refreshToken: string;
-  user: {
-    id: string;
-    email: string;
-    name: string;
-    global_role: string;
-    company_id: string | null;
-  };
-}
 
-const requestOTP = async (email: string) => {
+
+const requestOTP = async (email: string):Promise<string> => {
   try {
     email = email.toLowerCase().trim();
     const user = await userService.findOneUser({ email });
-    if (!user) return;
+    if (!user) return "Email Sent";
     const otp = otpService.generate();
 
     await otpService.store(email, otp, 600);
@@ -29,9 +20,15 @@ const requestOTP = async (email: string) => {
     await sendToSQS({to_email:email,sender_email:env.TEST_SEND_EMAIL,subject:"Login OTP",message:`Your OTP for login is ${otp}`})
     
     await logOTPEmailContent(email, otp); //For testing purposes
-    return "Email sent";
-  } catch (error) {
-    throw error;
+    return "Email Sent";
+  } catch (error:any) {
+   if (error instanceof AuthError) throw error;
+
+    throw new AuthError(
+        AuthErrorType.INVALID_CREDENTIALS,
+        400,
+        `Failed to request OTP: ${error.message}`,
+      );
   }
 };
 
@@ -45,15 +42,15 @@ const verifyOTP = async (
     const isValid = await otpService.verify(email, providedOTP);
 
     if (!isValid) {
-      throw new Error("Invalid or expired OTP");
+      throw new AuthError(AuthErrorType.INVALID_OTP,401,"INVALID OR EXPIRED OTP")
     }
     let user = await userService.findOneUser({ email });
     if (!user) {
-      throw new Error("Failed to retrieve or create user");
+      throw new AuthError(AuthErrorType.USER_NOT_FOUND,404,"USER NOT FOUND")
     }
 
     if (user.is_archived) {
-      throw new Error("Account is disabled");
+      throw new AuthError(AuthErrorType.ACCOUNT_LOCKED,403,"Account is Disabled")
     }
   
 
@@ -82,8 +79,14 @@ const verifyOTP = async (
         company_id: user.company_id,
       },
     };
-  } catch (error) {
-    throw error;
+  } catch (error:any) {
+     if (error instanceof AuthError) throw error;
+
+      throw new AuthError(
+        AuthErrorType.INVALID_CREDENTIALS,
+        400,
+        `Authentication failed: ${error.message}`,
+      );
   }
 };
 

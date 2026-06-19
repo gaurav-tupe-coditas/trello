@@ -1,31 +1,47 @@
 import { Router } from "express";
 import companyService from "./company.service.js";
 import { Route } from "../../routes/routes.types.js";
+import { RoutePermissionChecker } from "../../middleware/permission.handle.js";
+import { upload } from "../../utils/multer.js";
+import { body } from "../../utils/validator.js";
+import {
+  CompanyRouteCreate,
+  CompanyServiceCreate,
+  RouteViewCompany,
+} from "./company.types.js";
 
-const router = Router()
+const router = Router();
 
-router.post("/create",async(req,res,next)=>{
+router.post(
+  "/create",
+  RoutePermissionChecker("create-company"),
+  upload.single("company-logo"),
+  body(CompanyRouteCreate),
+  async (req, res, next) => {
     try {
-        const data = req.body
-        const result = await companyService.createCompany(data)
+      let companydata = { ...req.body, logo: req.file?.path };
+      companydata = CompanyServiceCreate.parse(companydata);
+      const result = await companyService.createCompany(companydata);
 
-        res.status(200).send(result)
+      res.status(200).send(result);
     } catch (error) {
-        next(error)
+      next(error);
     }
-})
+  },
+);
 
-
-router.get("/:id",async(req,res,next)=>{
+router.get(
+  "/:id",
+  RoutePermissionChecker("view-company"),
+  async (req, res, next) => {
     try {
-        const id = req.params.id
-        const result = await companyService.getCompanyById(id)
-        res.status(200).send(result)
+      const parsedParams = RouteViewCompany.parse(req.params);
+      const result = await companyService.getCompanyById(parsedParams.id);
+      res.status(200).send(result);
     } catch (error) {
-        next( error)
+      next(error);
     }
-})
+  },
+);
 
-
-
-export default new Route("/company",router)
+export default new Route("/company", router);

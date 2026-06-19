@@ -1,19 +1,12 @@
-import { email } from "zod";
+import type { Transaction } from "sequelize";
+import { sequelize } from "../../connections/pg.connection.js";
 import domainsService from "../domains/domains.service.js";
 import subscriptionsRepo from "../subscriptions/subscriptions.repo.js";
 import userService from "../users/user.service.js";
 import companyRepo from "./company.repo.js";
-import { sequelize } from "../../connections/pg.connection.js";
-import type { Transaction } from "sequelize";
+import type { compnayCreation } from "./company.types.js";
 
-interface compnayCreation {
-  name: string;
-  logo?: string | null;
-  subscription_id: string;
-  admin_email: string;
-  admin_name: string;
-  createdBy: string;
-}
+
 
 const createCompany = async (data: compnayCreation) => {
   try {
@@ -67,7 +60,7 @@ const createCompany = async (data: compnayCreation) => {
 
 const getCompanyById = async(id:string)=>{
     try {
-        return await companyRepo.findAll(id)
+        return await companyRepo.findAll({where:{id}})
     } catch (error) {
         throw error
     }

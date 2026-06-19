@@ -1,16 +1,16 @@
-import type { Transaction } from "sequelize";
+import type { Attributes, CreateOptions, CreationAttributes, DestroyOptions, FindOptions, Transaction, UpdateOptions } from "sequelize";
 import { UserSchema } from "./users.schema.js";
 
-const findAll = (options: any) => UserSchema.findAll(options);
+const findAll = (findOptions: FindOptions<Attributes<UserSchema>>) => UserSchema.findAll(findOptions);
 
-const findOne = (options:any)=>UserSchema.findOne(options)
+const findOne = (findOptions:FindOptions<Attributes<UserSchema>>)=>UserSchema.findOne(findOptions)
 
-const create = (userData: any,transaction?:Transaction) => UserSchema.create(userData,{transaction:transaction ?? null});
+const create = (userData: CreationAttributes<UserSchema>,transaction?:Transaction) => UserSchema.create(userData,{transaction:transaction ?? null});
 
-const update = (queryOptions: any, userData: any,transaction?:Transaction) =>
+const update = (queryOptions: UpdateOptions<Attributes<UserSchema>>, userData: Partial<Attributes<UserSchema>>,transaction?:Transaction) =>
   UserSchema.update(userData, queryOptions);
 
-const deleteAll = (queryOptions: any) => UserSchema.destroy(queryOptions);
+const deleteAll = (queryOptions: DestroyOptions<Attributes<UserSchema>>) => UserSchema.destroy(queryOptions);
 
 export default {
   findAll,

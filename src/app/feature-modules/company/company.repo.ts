@@ -1,21 +1,43 @@
-import type { Transaction } from "sequelize";
+import type {
+  Attributes,
+  CreationAttributes,
+  DestroyOptions,
+  FindOptions,
+  Transaction,
+  UpdateOptions,
+} from "sequelize";
 import { CompanySchema } from "./company.schema.js";
 
 const findById = (id: string) => CompanySchema.findByPk(id);
 
-const findAll = (id: string) =>
-  CompanySchema.findAll({ where: { id} });
+const findAll = (findOptions: FindOptions<Attributes<CompanySchema>>) =>
+  CompanySchema.findAll(findOptions);
 
-const create = (data: any,transaction?:Transaction ) => CompanySchema.create(data,{transaction:transaction ?? null});
+const findOne = (findOptions: FindOptions<Attributes<CompanySchema>>) =>
+  CompanySchema.findOne(findOptions);
 
-const update = (id: string, data: any,transaction?:Transaction) =>
-  CompanySchema.update(data, { where: { id } });
+const create = (
+  userData: CreationAttributes<CompanySchema>,
+  transaction?: Transaction,
+) => CompanySchema.create(userData, { transaction: transaction ?? null });
 
-const deleteOne = (id: string, deleted_by: string) =>
-  CompanySchema.update({ deleted_by, is_archived: true }, { where: { id } });
+const update = (
+  queryOptions: UpdateOptions<Attributes<CompanySchema>>,
+  userData: Partial<Attributes<CompanySchema>>,
+  transaction?: Transaction,
+) =>
+  CompanySchema.update(userData, {
+    ...queryOptions,
+    transaction: transaction ?? null,
+  });
 
+const deleteAll = (queryOptions: DestroyOptions<Attributes<CompanySchema>>) =>
+  CompanySchema.destroy(queryOptions);
 
-
-export default{
-    findById,findAll,create,deleteOne,update
-}
+export default {
+  findById,
+  findAll,
+  create,
+  deleteAll,
+  update,
+};
